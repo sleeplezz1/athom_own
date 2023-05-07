@@ -131,11 +131,11 @@ sensor:
 
 button:
   - platform: factory_reset
-    name: "Restart with Factory Default Settings"
+    name: "${friendly_name} Restart with Factory Default Settings"
     id: Reset
     
   - platform: safe_mode
-    name: "Safe Mode"
+    name: "${friendly_name} Safe Mode"
     internal: false
 
 switch:
@@ -157,11 +157,11 @@ light:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "IP Address"
+      name: "${friendly_name} IP Address"
     ssid:
-      name: "Connected SSID"
+      name: "${friendly_name} Connected SSID"
     mac_address:
-      name: "Mac Address"
+      name: "${friendly_name} MAC Address"
      
 time:
   - platform: sntp
