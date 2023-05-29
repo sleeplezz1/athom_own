@@ -1,12 +1,14 @@
 substitutions:
-  device_name: "athom-smart-plug-v2"
+  name: "athom-smart-plug-v2"
+  friendly_name: "athom smart plug v2"
+  room: ""
   project_name: "Athom Technology.Smart Plug V2"
   project_version: "1.1"
   relay_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
-  name: "${device_name}"
-  friendly_name: ""
+  name: "${name}"
+  friendly_name: "${friendly_name}"
   name_add_mac_suffix: true
   project:
     name: "${project_name}"
