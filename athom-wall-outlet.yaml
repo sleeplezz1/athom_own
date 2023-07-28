@@ -1,4 +1,7 @@
 substitutions:
+  device_name: "athom-wall-outlet"
+  friendly_name: "Athom Wall Outlet"
+  project_name: "athom.wall-outlet"
   project_version: "1.1"
   relay_restore_mode: RESTORE_DEFAULT_OFF
 
@@ -35,7 +38,7 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-smart-plug-v2.yaml
+  package_import_url: github://athom-tech/athom-configs/athom-wall-outlet.yaml
 
 uart:
   rx_pin: RX
@@ -77,17 +80,16 @@ sensor:
     update_interval: 10s
     current:
       name: "${friendly_name} Current"
-      filters:
-          - lambda: if (x < 0.060) return 0.0; else return x;   #For the chip will report less than 3w power when no load is connected
-
+      # filters:
+      #     - lambda: if (x < 0.060) return 0.0; else return x;   #For the chip will report less than 3w power when no load is connected
 
     voltage:
       name: "${friendly_name} Voltage"
     power:
       name: "${friendly_name} Power"
       id: power_sensor
-      filters:
-          - lambda: if (x < 3.0) return 0.0; else return x;    #For the chip will report less than 3w power when no load is connected
+      # filters:
+      #     - lambda: if (x < 3.0) return 0.0; else return x;    #For the chip will report less than 3w power when no load is connected
 
 
     energy:
@@ -128,12 +130,8 @@ sensor:
 
 button:
   - platform: factory_reset
-    name: "Restart with Factory Default Settings"
+    name: Restart with Factory Default Settings
     id: Reset
-    
-  - platform: safe_mode
-    name: "Safe Mode"
-    internal: false
 
 switch:
   - platform: gpio
@@ -141,11 +139,16 @@ switch:
     pin: GPIO12
     id: relay
     restore_mode: ${relay_restore_mode}
+    on_turn_on:
+      - light.turn_on: red_led
+
+    on_turn_off:
+      - light.turn_off: red_led
 
 light:
   - platform: status_led
     name: "${friendly_name} Status LED"
-    id: blue_led
+    id: red_led
     disabled_by_default: true
     pin:
       inverted: true
@@ -154,12 +157,9 @@ light:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "IP Address"
-    ssid:
-      name: "Connected SSID"
-    mac_address:
-      name: "Mac Address"
+      name: "${friendly_name} IP Address"
+      disabled_by_default: true
      
 time:
   - platform: sntp
-    id: sntp_time
+    id: my_time
