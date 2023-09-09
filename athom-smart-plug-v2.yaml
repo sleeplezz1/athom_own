@@ -1,6 +1,7 @@
 substitutions:
   device_name: "athom-smart-plug-v2"
   friendly_name: "Athom Smart Plug V2"
+  device_comment: Anthon Smart Plug V2
   project_name: "athom.smart-plug-v2"
   project_version: "1.1"
   relay_restore_mode: RESTORE_DEFAULT_OFF
@@ -76,10 +77,12 @@ binary_sensor:
 sensor:
   - platform: uptime
     name: "Uptime Sensor"
+    disabled_by_default: true
 
   - platform: wifi_signal
     name: "WiFi Signal"
     update_interval: 60s
+    disabled_by_default: true
 
   - platform: cse7766
     update_interval: 10s
@@ -138,10 +141,12 @@ button:
   - platform: factory_reset
     name: "Factory Reset"
     id: Reset
+    disabled_by_default: true
 
   - platform: safe_mode
     name: "Safe Mode"
     internal: false
+    disabled_by_default: true
 
 switch:
   - platform: gpio
@@ -163,10 +168,13 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: "IP Address"
+      disabled_by_default: true
     ssid:
       name: "Connected SSID"
+      disabled_by_default: true
     mac_address:
       name: "Mac Address"
+      disabled_by_default: true
 
 time:
   - platform: sntp
