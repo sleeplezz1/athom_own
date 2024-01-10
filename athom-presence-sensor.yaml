@@ -135,12 +135,12 @@ binary_sensor:
 sensor:
   - platform: uptime
     name: "Uptime Sensor"
-    id: "uptime"
+    id: "uptime_sensor"
 
   - platform: wifi_signal
     name: "WiFi Signal Sensor"
     update_interval: 60s
-    id: "wifi_signal"
+    id: "wifi_signal_sensor"
 
   - platform: bh1750
     name: "Light Sensor"
