@@ -104,11 +104,12 @@ sensor:
 
 
     energy:
-      name: "Energy"
+      name: "${friendly_name} Energy"
       id: energy
       unit_of_measurement: kWh
       filters:
-        - throttle_average: 10s
+        - delta: 0.001
+        - heartbeat: 10s
         # Multiplication factor from W to kW is 0.001
         - multiply: 0.001
       on_value:
