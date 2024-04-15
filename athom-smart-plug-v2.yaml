@@ -5,15 +5,20 @@ substitutions:
   room: ""
   device_description: "athom smart plug v2"
   project_name: "Athom Technology.Smart Plug V2"
-  project_version: "2.0.2"
+  project_version: "2.0.3"
   relay_restore_mode: RESTORE_DEFAULT_OFF
+  # Set the update interval for power, current, energy sensors to update
   sensor_update_interval: 10s
+  # Set the update interval for sensors only needing occassional updates (i.e. WiFi Signal dB, WiFi Signal %, Last Restart & Device Uptime)
+  occassional_update_sensor_interval: 3min
   # Current Limit in Amps. AU Plug = 10. IL, BR, EU, UK, US Plug = 16.
   current_limit : "16"
   # Define a domain for this device to use. i.e. iot.home.lan (so device will appear as athom-smart-plug-v2.iot.home.lan in DNS/DHCP logs)
   dns_domain: ""
   # Set timezone of the smart plug. Useful if the plug is in a location different to the HA server. Can be entered in unix Country/Area format (i.e. "Australia/Sydney")
   timezone: ""
+  # Set the duration between the sntp service polling ntp.org servers for an update
+  sntp_update_interval: 6h
   # Enables faster network connections, with last connected SSID being connected to and no full scan for SSID being undertaken
   wifi_fast_connect: "false" 
   
@@ -21,6 +26,7 @@ substitutions:
 esphome:
   name: "${name}"
   friendly_name: "${friendly_name}"
+  comment: "${device_description}"
   area: "${room}"
   name_add_mac_suffix: true
   min_version: 2024.2.1
@@ -35,14 +41,15 @@ esp8266:
 preferences:
   flash_write_interval: 5min
 
-
 api:
 
 ota:
 
 logger:
   baud_rate: 0
-
+  logs:
+    component: ERROR # Fix for issue https://github.com/esphome/issues/issues/4717 "Component xxxxxx took a long time for an operation"
+    
 mdns:
   disabled: false
 
@@ -96,13 +103,14 @@ sensor:
   - platform: uptime
     name: "Uptime Sensor"
     id: uptime_sensor
+    update_interval: 60s
     entity_category: diagnostic
     internal: true
 
   - platform: wifi_signal
     name: "WiFi Signal"
     id: wifi_signal_db
-    update_interval: 60s
+    update_interval: "${occassional_update_sensor_interval}"
     entity_category: diagnostic
     internal: true
 
@@ -233,12 +241,14 @@ text_sensor:
     name: 'Last Restart'
     id: device_last_restart
     icon: mdi:clock
+    update_interval: "${occassional_update_sensor_interval}"
     entity_category: diagnostic
 #    device_class: timestamp
 
   #  Creates a sensor of the uptime of the device, in formatted days, hours, minutes and seconds
   - platform: template
     name: "Uptime"
+    update_interval: "${occassional_update_sensor_interval}"
     entity_category: diagnostic
     lambda: |-
       int seconds = (id(uptime_sensor).state);
@@ -267,7 +277,7 @@ time:
   # Define the timezone of the device
     timezone: "${timezone}"
   # Change sync interval from default 5min to 6 hours
-    update_interval: 360min    
+    update_interval: "${sntp_update_interval}"
   # Publish the time the device was last restarted
     on_time_sync:
       then:
