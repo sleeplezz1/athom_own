@@ -352,3 +352,4 @@ text_sensor:
 time:
   - platform: sntp
     id: my_time
+
