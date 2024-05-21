@@ -5,7 +5,7 @@ substitutions:
   room: ""
   device_description: "athom smart plug v2"
   project_name: "Athom Technology.Smart Plug V2"
-  project_version: "2.0.3"
+  project_version: "2.0.4"
   relay_restore_mode: RESTORE_DEFAULT_OFF
   hide_switch: "false"
   sensor_update_interval: 10s
