@@ -207,7 +207,7 @@ switch:
     pin: GPIO12
     id: relay
     restore_mode: ${relay_restore_mode}
-    internal: ${hide_switch}
+    internal: "${hide_switch}"
 
 light:
   - platform: status_led
