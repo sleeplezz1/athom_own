@@ -184,7 +184,6 @@ sensor:
     accuracy_decimals: 3
     filters:
       - multiply: 0.001
-    update_interval: 24h
 
 button:
   - platform: restart
